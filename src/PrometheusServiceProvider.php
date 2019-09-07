@@ -2,9 +2,11 @@
 
 namespace Superbalist\LaravelPrometheusExporter;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Prometheus\CollectorRegistry;
 use Prometheus\Storage\Adapter;
+
 
 class PrometheusServiceProvider extends ServiceProvider
 {
@@ -50,7 +52,7 @@ class PrometheusServiceProvider extends ServiceProvider
             $factory = $app['prometheus.storage_adapter_factory']; /** @var StorageAdapterFactory $factory */
             $driver = config('prometheus.storage_adapter');
             $configs = config('prometheus.storage_adapters');
-            $config = array_get($configs, $driver, []);
+            $config = Arr::get($configs, $driver, []);
             return $factory->make($driver, $config);
         });
         $this->app->alias(Adapter::class, 'prometheus.storage_adapter');
